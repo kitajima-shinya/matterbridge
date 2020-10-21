@@ -183,17 +183,27 @@ func (b *Bmattermost) handleProps(rmsg *config.Message, message *matterclient.Me
 	}
 	if _, ok := props["attachments"].([]interface{}); ok {
 		rmsg.Extra["attachments"] = props["attachments"].([]interface{})
-		if rmsg.Text == "" {
+		//if rmsg.Text == "" {
 			for _, attachment := range rmsg.Extra["attachments"] {
 				attach := attachment.(map[string]interface{})
 				if attach["text"].(string) != "" {
+					rmsg.Text += attach["text"].(string)
 					rmsg.Text += attach["text"].(string)
 					continue
 				}
 				if attach["fallback"].(string) != "" {
 					rmsg.Text += attach["fallback"].(string)
 				}
+				if attach["AuthorName"].(string) != "" {
+					rmsg.Text += attach["AuthorName"].(string)
+				}
+				if attach["Title"].(string) != "" {
+					rmsg.Text += attach["Title"].(string)
+				}
+				if attach["TitleLink"].(string) != "" {
+					rmsg.Text += attach["TitleLink"].(string)
+				}
 			}
-		}
+		//}
 	}
 }
